@@ -5,10 +5,12 @@ import { PointerLockControls } from "three/examples/jsm/controls/PointerLockCont
 
 extend({ PointerLockControls });
 
-const CameraControls = ({ forward, backward, left, right }) => {
+const CameraControls = ({ forward, backward, left, right, setText }) => {
     const {
       camera,
       gl: { domElement },
+      raycaster,
+      scene,
     } = useThree();
     
     const controls = useRef();
@@ -17,30 +19,39 @@ const CameraControls = ({ forward, backward, left, right }) => {
       if (!controls.current.isLocked) controls.current.lock()
     })  
 
-    let vector = new THREE.Vector3()
+    let worldDirection = new THREE.Vector3()
+    let worldPosition = new THREE.Vector3()
     const speed = 0.1
+
     useFrame(() => {
+      camera.getWorldDirection(worldDirection)
+      camera.getWorldPosition(worldPosition)
+
+      raycaster.set( worldPosition, worldDirection )
+      const intersect = raycaster.intersectObjects(scene.children)
+      if (intersect[0] && controls.current.isLocked) { 
+        if (intersect[0].object.userData.text) {
+          setText(intersect[0].object.userData.text)
+        } else setText(null)
+      }
+
       if (forward) {
-        camera.getWorldDirection(vector)
-        camera.position.x = camera.position.x + (vector.x * speed)
-        camera.position.z = camera.position.z + (vector.z * speed)
+        camera.position.x = camera.position.x + (worldDirection.x * speed)
+        camera.position.z = camera.position.z + (worldDirection.z * speed)
       }
       if (backward) {
-        camera.getWorldDirection(vector)
-        camera.position.x = camera.position.x - (vector.x * speed)
-        camera.position.z = camera.position.z - (vector.z * speed)
+        camera.position.x = camera.position.x - (worldDirection.x * speed)
+        camera.position.z = camera.position.z - (worldDirection.z * speed)
       }
 
       if (right) {
-        camera.getWorldDirection(vector)
-        camera.position.x = camera.position.x - (vector.z * speed)
-        camera.position.z = camera.position.z + (vector.x * speed)
+        camera.position.x = camera.position.x - (worldDirection.z * speed)
+        camera.position.z = camera.position.z + (worldDirection.x * speed)
       }
 
       if (left) {
-        camera.getWorldDirection(vector)
-        camera.position.x = camera.position.x + (vector.z * speed)
-        camera.position.z = camera.position.z - (vector.x * speed)
+        camera.position.x = camera.position.x + (worldDirection.z * speed)
+        camera.position.z = camera.position.z - (worldDirection.x * speed)
       }
     })
 

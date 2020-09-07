@@ -27,8 +27,6 @@ function Obelisk({setHover, setMenuVis}) {
       <mesh
         position={[0, 0, 0]}
         scale={[1,1,1]}
-        castShadow
-        receiveShadow     
       >
         <boxBufferGeometry attach="geometry" args={[1,2,1]} />
         <meshStandardMaterial 
@@ -41,7 +39,6 @@ function Obelisk({setHover, setMenuVis}) {
 
       <mesh 
         position={[0,-1,0]}
-        castShadow
       >
       <boxGeometry attach="geometry" args={[1,1,1]} />
       <meshStandardMaterial 

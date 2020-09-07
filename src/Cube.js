@@ -9,6 +9,9 @@ const Cube = () => {
   return (
     <mesh
       position={[2,0,2]}
+      userData={{
+        text: 'THIS IS THE CUBE'
+      }}
     >
       <boxBufferGeometry attach="geometry" args={[1,1,1]} />
       <meshPhongMaterial attach="material">

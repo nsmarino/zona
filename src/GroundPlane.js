@@ -7,7 +7,7 @@ const GroundPlane = () => {
     const texture = useLoader(ImageLoader, TextureURL )
 
     return (
-      <mesh receiveShadow rotation={[-1.5708,0,0]} position={[0,-2,-5]}>
+      <mesh rotation={[-1.5708,0,0]} position={[0,-2,-5]}>
         <planeBufferGeometry attach="geometry" args={[100,100]}/>
         <meshPhongMaterial attach="material">
         <texture 

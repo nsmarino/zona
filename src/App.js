@@ -4,19 +4,20 @@ import { Canvas } from 'react-three-fiber'
 import GroundPlane from './GroundPlane'
 import Obelisk from './Obelisk'
 import Cube from './Cube'
+import Asset from './Asset'
 import PointerLockControls from './PointerLockControls'
-import Label from './Label'
 
 const App = () => {
     const [hover, setHover] = useState(null)
+    const [text, setText] = useState('')
     const [menuVis, setMenuVis] = useState(false)
     const [forward, setForward] = useState(false)
     const [backward, setBackward] = useState(false)
     const [left, setLeft] = useState(false)
     const [right, setRight] = useState(false)
 
+    console.log('text',text)
     document.onkeydown = (e) => { 
-      console.log(e.keyCode)   
       if (e.keyCode === 32) {
         if (hover) {
           setMenuVis(!menuVis)
@@ -53,22 +54,20 @@ const App = () => {
       }
     }
 
-
-
   return (
   <>
-  <Canvas shadowMap>
+  <Canvas>
     <PointerLockControls 
       forward={forward} 
       backward={backward}
       left={left}
       right={right} 
+      setText={setText}
     />
 
     <ambientLight />
     <pointLight 
       position={[10, 10, 10]} 
-      castShadow
     />
 
     <Obelisk 
@@ -84,10 +83,12 @@ const App = () => {
       <GroundPlane />
     </Suspense>
 
+   <Suspense fallback={<>Loading...</>}>
+      <Asset />
+    </Suspense> 
+
   </Canvas>
-  { (menuVis && hover) && <div className="menu ">{hover.text}</div>}
-  { hover && <Label label={hover.label} /> }
-  <div className="focus"></div>
+  <div className="label">{text}</div>
 </>
 )}
 
