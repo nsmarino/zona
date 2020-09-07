@@ -11,7 +11,7 @@ body,
   padding: 0;
 }
 
-.test {
+.focus {
   border: 2px solid lightgray;
   border-radius: 50%;
   position: absolute;
@@ -23,12 +23,34 @@ body,
   left: 50%;
 }
 
+.label {
+  border: 2px solid lightgray;
+  background-color: lightgray;
+  position: absolute;
+  width: 80px;
+  margin-top: 25px;
+  margin-left: -40px;
+  top: 50%;
+  left: 50%;
+  text-align: center;
+}
+
+.label p {
+  margin: 0;
+}
+
+.btnPrompt {
+  font-size: x-small;
+}
+
 .menu {
   border: 2px solid #222;
   background-color: lightgrey;
   position: absolute;
-  width: 150px;
-  height: 200px;
-  top: 30%;
-  left: 30%;
+  width: 300px;
+  margin-left: -150px;
+  height: 100px;
+  padding: 10px;
+  top: 80%;
+  left: 50%;
 }

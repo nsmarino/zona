@@ -2,20 +2,68 @@ import React, { Suspense, useState } from 'react'
 import { Canvas } from 'react-three-fiber'
 
 import GroundPlane from './GroundPlane'
-// import BackDrop from './BackDrop'
 import Obelisk from './Obelisk'
-// import OrbitControls from './OrbitControls'
+import Cube from './Cube'
 import PointerLockControls from './PointerLockControls'
+import Label from './Label'
 
 const App = () => {
+    const [hover, setHover] = useState(null)
     const [menuVis, setMenuVis] = useState(false)
+    const [forward, setForward] = useState(false)
+    const [backward, setBackward] = useState(false)
+    const [left, setLeft] = useState(false)
+    const [right, setRight] = useState(false)
 
-    const toggleMenu = () => setMenuVis(!menuVis)
+    document.onkeydown = (e) => { 
+      console.log(e.keyCode)   
+      if (e.keyCode === 32) {
+        if (hover) {
+          setMenuVis(!menuVis)
+        } else {
+          setMenuVis(false)
+        }
+      }
+      if (e.keyCode === 89) { // Y
+        setForward(true)
+      }
+      if (e.keyCode === 72) { // H
+        setBackward(true)
+      }
+      if (e.keyCode === 71) { // H
+        setLeft(true)
+      }
+      if (e.keyCode === 74) { // H
+        setRight(true)
+      }
+    }
+
+    document.onkeyup = (e) => {    
+      if (e.keyCode === 89) { // Y
+        setForward(false)
+      }
+      if (e.keyCode === 72) { // H
+        setBackward(false)
+      }
+      if (e.keyCode === 71) { // H
+        setLeft(false)
+      }
+      if (e.keyCode === 74) { // H
+        setRight(false)
+      }
+    }
+
+
 
   return (
   <>
   <Canvas shadowMap>
-    <PointerLockControls />
+    <PointerLockControls 
+      forward={forward} 
+      backward={backward}
+      left={left}
+      right={right} 
+    />
 
     <ambientLight />
     <pointLight 
@@ -23,16 +71,23 @@ const App = () => {
       castShadow
     />
 
-    <Obelisk toggleMenu={toggleMenu} />
+    <Obelisk 
+      setHover={setHover} 
+      setMenuVis={setMenuVis}
+    />
 
     <Suspense fallback={<>Loading...</>}>
-    <GroundPlane />
+      <Cube />
+    </Suspense>
+
+    <Suspense fallback={<>Loading...</>}>
+      <GroundPlane />
     </Suspense>
 
   </Canvas>
-  <div className="test"></div>
-  { menuVis && <div className="menu">
-      A floating object. It is cold to the touch.</div>}
+  { (menuVis && hover) && <div className="menu ">{hover.text}</div>}
+  { hover && <Label label={hover.label} /> }
+  <div className="focus"></div>
 </>
 )}
 

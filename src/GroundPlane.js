@@ -5,11 +5,6 @@ import TextureURL from './assets/checker.png'
 
 const GroundPlane = () => {
     const texture = useLoader(ImageLoader, TextureURL )
-    // texture.wrapS = RepeatWrapping
-    // texture.wrapT = RepeatWrapping
-    // texture.magFilter = NearestFilter
-    // const repeats = planeSize / 2
-    // texture.repeat.set(repeats, repeats)
 
     return (
       <mesh receiveShadow rotation={[-1.5708,0,0]} position={[0,-2,-5]}>
