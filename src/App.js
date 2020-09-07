@@ -1,26 +1,39 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React, { Suspense, useState } from 'react'
+import { Canvas } from 'react-three-fiber'
 
-function App() {
+import GroundPlane from './GroundPlane'
+// import BackDrop from './BackDrop'
+import Obelisk from './Obelisk'
+// import OrbitControls from './OrbitControls'
+import PointerLockControls from './PointerLockControls'
+
+const App = () => {
+    const [menuVis, setMenuVis] = useState(false)
+
+    const toggleMenu = () => setMenuVis(!menuVis)
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
-}
+  <>
+  <Canvas shadowMap>
+    <PointerLockControls />
 
-export default App;
+    <ambientLight />
+    <pointLight 
+      position={[10, 10, 10]} 
+      castShadow
+    />
+
+    <Obelisk toggleMenu={toggleMenu} />
+
+    <Suspense fallback={<>Loading...</>}>
+    <GroundPlane />
+    </Suspense>
+
+  </Canvas>
+  <div className="test"></div>
+  { menuVis && <div className="menu">
+      A floating object. It is cold to the touch.</div>}
+</>
+)}
+
+export default App
